@@ -1,7 +1,7 @@
 import './App.css'
 import Die from "./components/Die.jsx";
-import {useState} from "react";
-import {nanoid} from "nanoid";
+import { useState } from "react";
+import { nanoid } from "nanoid";
 
 function App() {
     const [dice, setDice] = useState(generateAllNewDice())
@@ -17,7 +17,11 @@ function App() {
     }
 
     function rollDice() {
-        setDice(generateAllNewDice())
+        setDice(oldDice => oldDice.map(die =>
+            die.isHeld ?
+                die :
+                { ...die, value: Math.ceil(Math.random() * 6) }
+        ))
     }
 
     function hold(id) {
@@ -39,6 +43,8 @@ function App() {
 
     return (
         <main>
+            <h1 className="title">Tenzies</h1>
+            <p className="instructions">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
             <div className="dice-container">
                 {diceElements}
             </div>
